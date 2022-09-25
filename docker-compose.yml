@@ -3,9 +3,9 @@ services:
   web:
     build: .
     ports:
-      - "8000:5000"
-  redis:
-    image: "redis:alpine"
+       - 5000:5000
+    volumes:
+      - .:/code
   mongodb_container:
     image: mongo:5.0
     environment:

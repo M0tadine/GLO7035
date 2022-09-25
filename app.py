@@ -1,30 +1,32 @@
-import time
-import pymongo
-import redis
-from flask import Flask
-import requests
-import pandas as pd
-import json
+from pymongo import MongoClient
 from initMongoDb import initRestaurantsColl
+from flask  import Flask
+
+client = MongoClient('127.0.0.1',
+                     username='root',
+                     password='toor',)
+db = client['RestosMiam']
+restaurantsCol = db['restaurants']
+
+initRestaurantsColl(restaurantsCol)
+
 
 
 
 app = Flask(__name__)
-cache = redis.Redis(host='redis', port=6379)
-initRestaurantsColl()
 
-def get_hit_count():
-    retries = 5
-    while True:
-        try:
-            return cache.incr('hits')
-        except redis.exceptions.ConnectionError as exc:
-            if retries == 0:
-                raise exc
-            retries -= 1
-            time.sleep(0.5)
+#Import the flask module
+
+#Create a Flask constructor. It takes name of the current module as the argument
+
+#Create a route decorator to tell the application, which URL should be called for the #described function and define the function
 
 @app.route('/')
-def hello():
-    count = get_hit_count()
-    return 'Hello World! I have been seen {} times.\n'.format(count)
+def tutorialspoint():
+    cursor = restaurantsCol.find({})
+    for document in cursor:
+          print(document)
+#Create the main driver function
+if __name__ == '__main__':
+#call the run method
+    app.run(debug=True,host='0.0.0.0')
