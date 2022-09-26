@@ -1,7 +1,10 @@
-FROM python:3
+FROM python:3.7-alpine
 RUN apt−get −y update
 RUN apt−get install −y pip3 build−essential
 COPY . .
-RUN pip3 install −r requirements.txt
+RUN pip3 install -r requirements.txt
 ENTRYPOINT ["python3"]
+EXPOSE 5000
+RUN wget https://www.donneesquebec.ca/recherche/dataset/4bf7fa6a-d071-4187-a98f-c7082b99408e/resource/83b2f47f-5473-4556-b021-99d0632c7bcf/download/piste_cyclable.json
+RUN python3 initMongoDb.py
 RUN python3 app.py
