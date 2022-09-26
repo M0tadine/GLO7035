@@ -6,6 +6,9 @@ services:
        - 5000:5000
     volumes:
       - .:/code
+    depends_on:
+      - neo
+      - mongodb_container
   mongodb_container:
     image: mongo:5.0
     environment:
@@ -15,6 +18,16 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+  neo:
+        image: neo4j:latest
+        ports: 
+            - 7474:7474
+            - 7687:7687
+        volumes:
+            - neo4j_data:/data/
+        env_file:
+            - .env.neo4j
 
 volumes:
   mongodb_data_container:
+  neo4j_data:
